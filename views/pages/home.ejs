@@ -1,0 +1,10 @@
+<% layout('layouts/boilerplate') %>
+    <h1>Welcome Home</h1>
+    <p>Hello, <%= user.name %>
+    </p>
+    <div class="d-flex justify-content-start align-items-center py-3">
+        <img src="<%= user.image %>" class="rounded  d-block" alt="avatar">
+    </div>
+    <form action="/logout" method="post">
+        <button class="btn btn-danger">Logout</button>
+    </form>

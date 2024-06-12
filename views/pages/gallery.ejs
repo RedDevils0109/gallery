@@ -1,0 +1,39 @@
+<% layout('layouts/boilerplate') %>
+    <div class="container">
+        <h1>Your gallery</h1>
+        <a href="#" id="addFolder" data-bs-toggle="modal" data-bs-target="#addFolderModal">
+            Add folder
+        </a>
+        <div class="d-flex wrap my-3 justify-content-start">
+            <% if (gallery) { %>
+                <% for (let folder of gallery.folders) { %>
+                    <a href="/gallery/folder/<%= folder._id %>" class="btn btn-primary m-3">
+                        <%= folder.name %>
+                    </a>
+                    <% } %>
+                        <% } %>
+        </div>
+        <div class="modal fade" id="addFolderModal" tabindex="-1" aria-labelledby="addFolderModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addFolderModalLabel">Type folder name</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addFolderForm" action="/gallery/addFolder" method="POST">
+                            <div class="mb-3">
+                                <label for="folderName" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="folderName" name="name" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" form="addFolderForm" class="btn btn-primary" id="change-pass">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
