@@ -4,6 +4,7 @@ const { cloudinary } = require('../cloudinary')
 
 
 const addFolder = async (req, res) => {
+    console.log(req.body)
 
     const name = req.body.name;
     const userId = req.session.user._id;
@@ -18,6 +19,7 @@ const addFolder = async (req, res) => {
     await gallery.save();
 
     res.redirect('/gallery')
+    
 
 
 };
@@ -101,6 +103,7 @@ const putEditFolder = async (req, res) => {
 
     const userId = req.session.user._id;
     const folderId = req.params.id;
+    console.log(req.body)
 
     if (!folderId) {
         return res.status(400).json({ error: 'Folder ID is required' });

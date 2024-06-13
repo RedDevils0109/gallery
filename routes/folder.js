@@ -5,6 +5,10 @@ const User = require('../models/user')
 
 const multer = require('multer');
 const { storage, cloudinary } = require('../cloudinary')
+const {
+    validateAddFolder,
+    validateEditFolder
+} = require('../schema/gallerySchema')
 const upload = multer({ storage });
 
 
@@ -21,10 +25,10 @@ router.get('/', catchAsync(async (req, res) => {
     // console.log(gallery)
     res.render('pages/gallery', { gallery })
 }))
-router.post('/addFolder', catchAsync(addFolder))
+router.post('/addFolder', validateAddFolder, catchAsync(addFolder))
 router.get('/folder/:id', catchAsync(getFolder))
 router.get('/folder/edit/:id', catchAsync(getEditFolder))
-router.put('/folder/edit/:id', upload.array('image'), putEditFolder)
+router.put('/folder/edit/:id', upload.array('image'), validateEditFolder, putEditFolder)
 
 router.delete('/folder/:id', catchAsync(deleteFolder));
 
