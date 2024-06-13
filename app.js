@@ -94,19 +94,26 @@ app.post('/sign-up', catchAsync(signUp))
 app.post('/logout', (req, res, next) => {
     req.logout((err) => {
         if (err) {
-            return next(err); // Handle logout error
+            return next(err);
         }
-        // Destroy the session after logging out
         req.session.destroy((err) => {
             if (err) {
-                return next(err); // Handle session destruction error
+                return next(err);
             }
-            // Clear the cookies set by Google OAuth (if any)
-            res.clearCookie('connect.sid'); // Clear session cookie
+            res.clearCookie('connect.sid');
             res.redirect('/')
 
         });
     });
+});
+
+app.all('*', (req, res, next) => {
+    next(new Error('Page Not Found', 404))
+})
+
+app.use(function (err, req, res, next) {
+    const { statusCode = 500, message = 'Internal Server Error' } = err;
+    res.status(statusCode).render('pages/error', { err: err });
 });
 
 app.listen(port, () => {
