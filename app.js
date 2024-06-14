@@ -8,6 +8,9 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const multer = require('multer');
 const methodOverride = require('method-override');
+const EventEmitter = require('events')
+class MyEmitter extends EventEmitter { }
+const myEmitter = new MyEmitter();
 
 
 const User = require('./models/user')
@@ -29,6 +32,10 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(methodOverride('_method'));
 const port = process.env.PORT
 
+myEmitter.on('requestRecieved', (method, url) => {
+    console.log(`Request recieved: ${method} ${url}`)
+})
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -44,6 +51,11 @@ app.use(session({
         maxAge: 24 * 60 * 60 * 1000
     },
 }));
+
+app.use((req, res, next) => {
+    myEmitter.emit('requestRecieved', req.method, req.url)
+    next()
+})
 
 // Initialize Passport middleware
 app.use(passport.initialize());
